@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import QR from '@/modules/qr/';
-import {IQR} from '@/modules/qr/qr-generator';
+import {IQRCode} from '@/modules/qr/qr';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<IQR>
+  res: NextApiResponse<IQRCode>
 ) {
-  res.status(200).json(await QR.generateQR());
+  res.status(200).json(await QR.generate("lol"));
 }
