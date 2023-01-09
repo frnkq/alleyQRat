@@ -4,7 +4,9 @@ import { Event, NavigationEnd, Router } from '@angular/router';
 interface ITab {
   tabName: string,
   title: string,
-  icon: string
+  icon?: string,
+  activeIcon: string,
+  inactiveIcon: string
 }
 
 @Component({
@@ -17,24 +19,31 @@ export class TabsPage {
     {
       tabName: 'home',
       title: 'Home',
-      icon: 'home-outline'
+      activeIcon: 'home',
+      inactiveIcon: 'home-outline'
     },
     {
       tabName: 'map',
       title: 'Map',
-      icon: 'map-outline'
+      activeIcon: 'map',
+      inactiveIcon: 'map-outline'
     },
     {
       tabName: 'scan',
       title: 'Scan',
-      icon: 'qr-code-outline',
+      activeIcon: 'qr-code',
+      inactiveIcon: 'qr-code-outline'
     },
     {
       tabName: 'settings',
       title: 'Settings',
-      icon: 'settings-outline'
+      activeIcon: 'settings',
+      inactiveIcon: 'settings-outline'
     }
-  ];
+  ].map((tab: ITab) => {
+    tab.icon = tab.inactiveIcon;
+    return tab;
+  });
 
   constructor(private router: Router) {
     this.router.events.subscribe({
@@ -53,17 +62,16 @@ export class TabsPage {
   private markTabsAsInactiveExcept(tab: ITab): void {
     const indexOfCurrentTab = this.tabs.indexOf(tab);
     this.tabs.map((tab, index) => {
-      const isAlreadyInactive = tab.icon.indexOf('-outline') == -1;
+      const isAlreadyInactive = tab.icon == tab.activeIcon;
       const isNotCurrentTab = index != indexOfCurrentTab;
       if(isAlreadyInactive && isNotCurrentTab)
-        tab.icon = `${tab.icon}-outline`;
+        tab.icon = tab.inactiveIcon;
     })
   }
 
   private markTabAsActive(tab: ITab): void {
     const tabIndex = this.tabs.indexOf(tab);
-    const newIcon = this.tabs[tabIndex].icon.replace('-outline', ''); 
-    this.tabs[tabIndex].icon = newIcon; 
+    this.tabs[tabIndex].icon = tab.activeIcon; 
   }
 
 
