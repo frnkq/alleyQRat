@@ -9,19 +9,19 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
+        loadChildren: () => import('@pages/home/home.module').then(m => m.HomePageModule)
       },
       {
         path: 'map',
-        loadChildren: () => import('../map/map.module').then(m => m.MapPageModule)
+        loadChildren: () => import('@pages/map/map.module').then(m => m.MapPageModule)
       },
       {
         path: 'scan',
-        loadChildren: () => import('../scan/scan.module').then(m => m.ScanPageModule)
+        loadChildren: () => import('@pages/scan/scan.module').then(m => m.ScanPageModule)
       },
       {
         path: 'settings',
-        loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
+        loadChildren: () => import('@pages/settings/settings.module').then(m => m.SettingsPageModule)
       },
       {
         path: '',

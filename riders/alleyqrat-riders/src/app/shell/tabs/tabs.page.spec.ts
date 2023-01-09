@@ -54,25 +54,6 @@ describe('TabsPage', () => {
     });
   });
 
-  // it('should set active icon only for active tab', () => {
-  //   const navigationEvent = new NavigationEnd(0, '/', '/home');
-  //   component.changeIconForActiveTab(navigationEvent);
-  //   fixture.detectChanges();
-  //   const icons = Array.from(fixture.nativeElement.querySelectorAll('ion-icon') as NodeList) as Array<HTMLIonIconElement>;
-  //   let inactiveIcons = icons.filter((icon: HTMLIonIconElement) => icon.name?.toString().indexOf('-outline') !== -1).length;
-  //   let activeIcon = icons.filter((icon: HTMLIonIconElement) => icon.name?.toString().indexOf('-outline') == -1).length;
-  //   expect(inactiveIcons).toBe(component.tabs.length - 1);
-  //   expect(activeIcon).toBe(1);
-
-  //   const navigationEvent2 = new NavigationEnd(0, '/map', '');
-  //   component.changeIconForActiveTab(navigationEvent2);
-  //   fixture.detectChanges();
-  //   inactiveIcons = icons.filter((icon: HTMLIonIconElement) => icon.name?.toString().indexOf('-outline') !== -1).length;
-  //   activeIcon = icons.filter((icon: HTMLIonIconElement) => icon.name?.toString().indexOf('-outline') == -1).length;
-  //   expect(inactiveIcons).toBe(component.tabs.length - 1);
-  //   expect(activeIcon).toBe(1);
-  // });
-
   it('should set active icon only for active tab', () =>{
     const activeIconNames = component.tabs.map(tab => tab.activeIcon);
     const inactiveIconNames = component.tabs.map(tab => tab.inactiveIcon);
