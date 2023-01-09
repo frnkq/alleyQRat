@@ -1,13 +1,6 @@
 import { Component } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
-
-interface ITab {
-  tabName: string,
-  title: string,
-  icon?: string,
-  activeIcon: string,
-  inactiveIcon: string
-}
+import { Tab } from './tab';
 
 @Component({
   selector: 'app-tabs',
@@ -15,35 +8,32 @@ interface ITab {
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
-  public tabs: Array<ITab> = [
-    {
+  public tabs: Array<Tab> = [
+    new Tab({
       tabName: 'home',
       title: 'Home',
       activeIcon: 'home',
       inactiveIcon: 'home-outline'
-    },
-    {
+    }),
+    new Tab({
       tabName: 'map',
       title: 'Map',
       activeIcon: 'map',
       inactiveIcon: 'map-outline'
-    },
-    {
+    }),
+    new Tab({
       tabName: 'scan',
       title: 'Scan',
       activeIcon: 'qr-code',
       inactiveIcon: 'qr-code-outline'
-    },
-    {
+    }),
+    new Tab({
       tabName: 'settings',
       title: 'Settings',
       activeIcon: 'settings',
       inactiveIcon: 'settings-outline'
-    }
-  ].map((tab: ITab) => {
-    tab.icon = tab.inactiveIcon;
-    return tab;
-  });
+    })
+  ];
 
   constructor(private router: Router) {
     this.router.events.subscribe({
@@ -55,29 +45,23 @@ export class TabsPage {
     const isUrlReady = event instanceof NavigationEnd;
     if(!isUrlReady) return;
     const tab = this.getTabFromUrl(event.urlAfterRedirects || event.url);
-    this.markTabAsActive(tab);
-    this.markTabsAsInactiveExcept(tab);
+    this.updateTabIconsBasedOnState(tab);
   }
 
-  private markTabsAsInactiveExcept(tab: ITab): void {
-    const indexOfCurrentTab = this.tabs.indexOf(tab);
-    this.tabs.map((tab, index) => {
-      const isAlreadyInactive = tab.icon == tab.activeIcon;
-      const isNotCurrentTab = index != indexOfCurrentTab;
-      if(isAlreadyInactive && isNotCurrentTab)
-        tab.icon = tab.inactiveIcon;
-    })
-  }
-
-  private markTabAsActive(tab: ITab): void {
-    const tabIndex = this.tabs.indexOf(tab);
-    this.tabs[tabIndex].icon = tab.activeIcon; 
-  }
-
-
-  private getTabFromUrl(url: string): ITab {
-    const tabName = (url.split('/').pop() as string);
-    const tab = (this.tabs.filter(tab => tab.tabName == tabName).pop() as ITab);
+  private getTabFromUrl(url: string): Tab {
+    const tabName = url.split('/').pop() as string;
+    const tab = this.tabs.filter(tab => tab.tabName == tabName).pop() as Tab;
     return tab;
+  }
+
+  private updateTabIconsBasedOnState(activeTab: Tab): void {
+    const tabIndex = this.tabs.indexOf(activeTab);
+    this.tabs.forEach((tab, index) => {
+      if(tabIndex == index){
+        tab.markAsActive();
+      } else {
+        tab.markAsInactive();
+      }
+    });
   }
 }
