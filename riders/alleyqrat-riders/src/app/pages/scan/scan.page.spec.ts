@@ -36,12 +36,12 @@ describe('ScanPage', () => {
   });
 
   it('should open the camera when the scan button is clicked', async () => {
-    spyOn(component, 'openCamera');
+    spyOn(component, 'scan');
     const debugElement = fixture.debugElement;
     const button = debugElement.query(By.css('#scanButton'));
     button.nativeElement.click();
     await fixture.whenStable();
-    expect(component.openCamera).toHaveBeenCalled();
+    expect(component.scan).toHaveBeenCalled();
   });
 
   it('should set components scannedImageSrc as the path returned by the image', async () => {
@@ -62,6 +62,4 @@ describe('ScanPage', () => {
     expect(component.scannedImage).toBeDefined();
     expect(image.src).toBe(component.scannedImage?.src);
   });
-
-
 });

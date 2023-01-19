@@ -28,7 +28,7 @@ export class ScanPage extends BasePage implements OnInit  {
   ngOnInit() {
   }
 
-  async openCamera() {
+  async scan() {
     const picture = await this.camera.takePicture();
     this.scannedImage = picture;
   }
