@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 import {environment} from 'src/environments/environment';
 
@@ -27,6 +28,15 @@ describe('ScanPage', () => {
   it('should have appName and pageName in the title', () => {
     expect(appWindow.document.title).toContain(environment.appName);
     expect(appWindow.document.title).toContain(component.title);
+  });
+
+  it('should open the camera when the scan button is clicked', async () => {
+    spyOn(component, 'openCamera');
+    const debugElement = fixture.debugElement;
+    const button = debugElement.query(By.css('#scanButton'));
+    button.nativeElement.click();
+    await fixture.whenStable();
+    expect(component.openCamera).toHaveBeenCalled();
   });
 
 });

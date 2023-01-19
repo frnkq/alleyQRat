@@ -1,4 +1,4 @@
-import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { Camera, CameraResultType, Photo } from '@capacitor/camera';
 import { PhotoWrapper } from './photo-wrapper';
 
 export class CameraWrapper {
@@ -13,9 +13,8 @@ export class CameraWrapper {
       };
       try {
         const photo = await Camera.getPhoto(cameraOptions);
-        resolve(new PhotoWrapper());
+        resolve(new PhotoWrapper(photo));
       } catch(err) {
-        console.log("I am herer");
         reject(err);
       }
     });

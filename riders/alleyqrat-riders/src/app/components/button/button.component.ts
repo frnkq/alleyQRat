@@ -1,13 +1,20 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+export interface ButtonConfig {
+  iconName?: string|undefined;
+  iconPath?: string|undefined;
+  buttonSize?: string|undefined;
+  buttonStyle?: string|undefined;
+};
+
 @Component({
   selector: 'app-button',
-  templateUrl: './button.component.html',
+   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent implements OnInit {
-  @Input() iconName: string|undefined;
-  @Input() iconPath: string|undefined;
+  @Input() config: ButtonConfig = {};
+
   constructor() { }
 
   ngOnInit() {
@@ -19,7 +26,7 @@ export class ButtonComponent implements OnInit {
   }
 
   private hasEitherIconNameOrPathButNotBoth() {
-    if(this.iconPath !== undefined && this.iconName !== undefined) {
+    if(this.config.iconPath !== undefined && this.config.iconName !== undefined) {
       throw Error("Icon cannot have both an icon name and an icon path");
     }
   }

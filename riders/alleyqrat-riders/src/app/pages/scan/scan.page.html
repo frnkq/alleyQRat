@@ -5,5 +5,21 @@
 </ion-header>
 
 <ion-content>
-  <app-button [iconName]="'scan-outline'"> </app-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+        <ion-title style="height: 50vh">Escaneá el checkpoint</ion-title>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="10" offset="1">
+        <app-button
+          id="scanButton"
+          [config]="scanButtonConfig"
+          (click)="openCamera()"
+        >
+        </app-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
