@@ -2,8 +2,13 @@ import {Photo} from "@capacitor/camera";
 
 export class PhotoWrapper {
   photo: Photo|undefined = undefined;;
-  public constructor(photo: Photo){
+
+  public constructor(photo?: Photo){
     this.photo = photo;
+  }
+
+  public get src() {
+    return this.base64;
   }
 
   public get base64() {

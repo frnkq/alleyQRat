@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {BasePage, PageConfig} from '@pages/base-page';
 import { ButtonConfig } from '@components/button/button.component';
 import {CameraService} from '@services/camera/camera.service';
+import {PhotoWrapper} from '@services/camera/photo-wrapper';
 
 @Component({
   selector: 'app-scan',
@@ -10,7 +11,7 @@ import {CameraService} from '@services/camera/camera.service';
 })
 export class ScanPage extends BasePage implements OnInit  {
   scanButtonConfig: ButtonConfig = {};
-  base64: string = "";
+  scannedImage: PhotoWrapper|undefined;
   constructor(private camera: CameraService) {
     const pageConfig: PageConfig = {
       title: "Scan"
@@ -29,8 +30,7 @@ export class ScanPage extends BasePage implements OnInit  {
 
   async openCamera() {
     const picture = await this.camera.takePicture();
-    console.log("having this.", this.base64);
+    this.scannedImage = picture;
   }
-
 
 }
