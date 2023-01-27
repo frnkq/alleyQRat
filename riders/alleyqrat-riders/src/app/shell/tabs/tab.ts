@@ -1,9 +1,10 @@
 interface TabOptions {
-  tabName: string,
-  title: string,
-  icon?: string,
-  activeIcon: string,
-  inactiveIcon: string,
+  tabName: string;
+  title: string;
+  icon?: string;
+  activeIcon: string;
+  inactiveIcon: string;
+  onLoad?: () => void;
 }
 
 export class Tab implements TabOptions {
@@ -12,13 +13,15 @@ export class Tab implements TabOptions {
   icon: string;
   activeIcon: string;
   inactiveIcon: string;
+  onLoad: undefined | (() => void);
 
-  constructor(tabOptions: TabOptions){
+  constructor(tabOptions: TabOptions) {
     this.tabName = tabOptions.tabName;
     this.title = tabOptions.title;
     this.icon = tabOptions.inactiveIcon;
     this.activeIcon = tabOptions.activeIcon;
     this.inactiveIcon = tabOptions.inactiveIcon;
+    if (tabOptions.onLoad) this.onLoad = tabOptions.onLoad;
   }
 
   markAsActive(): void {
@@ -29,4 +32,3 @@ export class Tab implements TabOptions {
     this.icon = this.inactiveIcon;
   }
 }
-
