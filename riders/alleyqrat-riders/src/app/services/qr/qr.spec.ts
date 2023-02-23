@@ -34,4 +34,23 @@ describe('PlatformService', () => {
     await expectAsync(scanner.scanQr()).toBeRejected();
   });
 
+  it('should go over the steps involved in scanning the qr manually: getting a picture, saving the picture, reading the picture, decoding qr', async () => {
+    const qrScanner = new QrManualScanner();
+    const takePictureSpy = spyOn<any>(qrScanner, 'takePicture').and.returnValue(
+      {}
+    );
+    const savePictureSpy = spyOn<any>(qrScanner, 'savePicture').and.returnValue(
+      { filePath: 'some/path' }
+    );
+    const readImageContentsSpy = spyOn<any>(
+      qrScanner,
+      'readImageContents'
+    ).and.returnValue({});
+    const decodeQrContentsSpy = spyOn<any>(qrScanner, 'decodeQrContents');
+    await qrScanner.scanQr();
+    expect(takePictureSpy).toHaveBeenCalled();
+    expect(savePictureSpy).toHaveBeenCalled();
+    expect(readImageContentsSpy).toHaveBeenCalled();
+    expect(decodeQrContentsSpy).toHaveBeenCalled();
+  });
 });

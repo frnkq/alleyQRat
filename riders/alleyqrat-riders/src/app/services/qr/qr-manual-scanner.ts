@@ -1,30 +1,21 @@
 import { Decoder } from '@nuintun/qrcode';
 import { Camera, CameraResultType, Photo } from '@capacitor/camera';
-import { Directory, Filesystem } from '@capacitor/filesystem';
-import QrScanner from './qr-scanner';
+import { Directory, Filesystem, ReadFileResult } from '@capacitor/filesystem';
 import { Buffer } from 'buffer';
+import QrScanner from './qr-scanner';
 
 export default class QrManualScanner extends QrScanner {
   override scanQr(): Promise<any | undefined> {
     return new Promise(async (resolve) => {
-      const { filePath } = await this.takePicture();
-      if (filePath == undefined) resolve(undefined);
-      // const qrContents = await this.getrQrContentsFromBase64(webPath as string);
-      const qrDecoder = new Decoder();
-      console.log('filepath here', filePath);
-      console.log('filepath here2', filePath);
-      const img = await Filesystem.readFile({
-        path: filePath,
-        directory: Directory.Data,
-      });
-      console.log(atob(img.data));
-      console.log('image from file', img);
-      // const cont = qrDecoder.scan(filePath as string);
-      resolve(img);
+      const image = await this.takePicture();
+      const { filePath } = await this.savePicture(image, 'scan_name');
+      const img = await this.readImageContents(filePath);
+      const contents = await this.decodeQrContents(img.data);
+      resolve(contents);
     });
   }
 
-  private async takePicture(): Promise<any> {
+  private async takePicture(): Promise<Photo> {
     return new Promise(async (resolve) => {
       const image = await Camera.getPhoto({
         quality: 90,
@@ -32,15 +23,16 @@ export default class QrManualScanner extends QrScanner {
         resultType: CameraResultType.Uri,
         saveToGallery: true,
       });
+      resolve(image);
       const fileName = new Date().getTime() + '.jpeg';
       const savedFileImage = await this.savePicture(image, fileName);
-      resolve(savedFileImage);
     });
   }
-  async savePicture(
+
+  private async savePicture(
     photo: Photo,
     fileName: string
-  ): Promise<{ filePath: string; webviewPath: string }> {
+  ): Promise<{ filePath: string }> {
     let base64Data: string;
 
     const response = await fetch(photo.webPath!);
@@ -55,11 +47,26 @@ export default class QrManualScanner extends QrScanner {
 
     return {
       filePath: `${fileName}`,
-      webviewPath: photo.webPath as string,
     };
   }
 
-  convertBlobToBase64(blob: Blob): Promise<any> {
+  private async readImageContents(imagePath: string): Promise<ReadFileResult> {
+    return new Promise(async (resolve) => {
+      const img = await Filesystem.readFile({
+        path: imagePath,
+        directory: Directory.Data,
+      });
+      resolve(img);
+    });
+  }
+
+  private decodeQrContents(imageData: string): any {
+    const qrDecoder = new Decoder();
+    const qrContents = qrDecoder.scan(imageData);
+    return qrContents;
+  }
+
+  private convertBlobToBase64(blob: Blob): Promise<any> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onerror = reject;
