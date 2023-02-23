@@ -14,9 +14,6 @@ describe('PlatformService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should be able to detect platform', () => {
-    expect(service.detectPlatform()).toContain('desktop');
-  });
   it('should be able to tell wether this is web or smartphone', () => {
     expect(service.isWeb).toBe(true);
     expect(service.isSmartphone).toBe(false);

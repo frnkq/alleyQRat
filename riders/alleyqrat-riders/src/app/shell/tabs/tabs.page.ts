@@ -26,9 +26,6 @@ export class TabsPage {
       title: 'Scan',
       activeIcon: 'qr-code',
       inactiveIcon: 'qr-code-outline',
-      onLoad: () => {
-        console.log('hi bro');
-      },
     }),
     new Tab({
       tabName: 'settings',

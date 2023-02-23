@@ -29,21 +29,12 @@ export class PlatformService {
     return (
       this.platform.is('pwa') ||
       this.platform.is('desktop') ||
-      this.platform.is('mobileweb')
+      this.platform.is('mobileweb') ||
+      this.platform.is('cordova')
     );
   }
 
   public get isSmartphone(): boolean {
-    return (
-      this.platform.is('hybrid') ||
-      this.platform.is('android') ||
-      this.platform.is('ios') ||
-      this.platform.is('tablet') ||
-      this.platform.is('phablet')
-    );
-  }
-
-  detectPlatform(): Array<PlatformType> {
-    return this.platform.platforms() as Array<PlatformType>;
+    return this.platform.is('android') || this.platform.is('ios');
   }
 }
